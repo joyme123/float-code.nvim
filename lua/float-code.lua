@@ -1,5 +1,5 @@
 -- main module file
-local module = require("plugin_name.module")
+local module = require("float-code.module")
 
 ---@class Config
 ---@field opt string Your config option
@@ -20,8 +20,8 @@ M.setup = function(args)
   M.config = vim.tbl_deep_extend("force", M.config, args or {})
 end
 
-M.hello = function()
-  module.my_first_function()
+M.show_float_code_window = function()
+  module.show_float_code_window()
 end
 
 return M
