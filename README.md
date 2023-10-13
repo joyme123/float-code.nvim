@@ -12,7 +12,7 @@ return {
   "joyme123/float-code.nvim",
   branch="main",
   config = function()
-    vim.api.nvim_set_keymap('n', '<leader>cf', ':ShowFloatCodeWindow<CR>', {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('n', '<leader>wf', ':FloatCodeWindowShow<CR>', {noremap = true, silent = true})
   end,
 }
 ```

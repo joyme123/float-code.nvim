@@ -15,6 +15,7 @@ end
 ---@return string
 M.show_float_code_window = function()
   if not vim.api.nvim_get_mode().mode:find("^[vV\22sS\19]") then
+    print("not in visualmode, skip")
     return ""
   end
 
