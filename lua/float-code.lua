@@ -24,4 +24,8 @@ M.show_float_code_window = function()
   module.show_float_code_window()
 end
 
+M.show_float_window = function ()
+  module.show_float_window({})
+end
+
 return M

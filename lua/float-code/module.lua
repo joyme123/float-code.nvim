@@ -1,38 +1,62 @@
 ---@class CustomModule
 local M = {}
 
-local function region_to_text(region)
-  local text = ''
-  local maxcol = vim.v.maxcol
-  for line, cols in vim.spairs(region) do
-    local endcol = cols[2] == maxcol and -1 or cols[2]
-    local chunk = vim.api.nvim_buf_get_text(0, line, cols[1], line, endcol, {})[1]
-    text = ('%s%s\n'):format(text, chunk)
-  end
-  return text
+M.get_selected_lines = function()
+  local _, start_line, _, _ = unpack(vim.fn.getpos("'<"))
+  local _, end_line, _, _ = unpack(vim.fn.getpos("'>"))
+
+  print("start: ", start_line, "end:", end_line)
+
+  local lines = vim.fn.getline(start_line, end_line)
+  print("lines", lines)
+  return lines
 end
 
----@return string
+
+local Popup = require("nui.popup")
+local popup_setted = false
+local popup
+
 M.show_float_code_window = function()
-  if not vim.api.nvim_get_mode().mode:find("^[vV\22sS\19]") then
-    print("not in visualmode, skip")
-    return ""
+  -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, true, true), 'v', false)
+  -- local mode = vim.api.nvim_get_mode().mode
+  -- print("mode:", mode)
+  local lines = M.get_selected_lines()
+  M.show_float_window(lines)
+end
+
+M.show_float_window = function (lines)
+  local enter = false
+  if #lines == 0 then
+    enter = true
+  end
+  if not popup_setted then
+    popup = Popup({
+      enter = enter,
+      focusable = true,
+      border = {
+        style = "rounded",
+      },
+      position = {
+        row = "1%",
+        col = "98%",
+      },
+      size = {
+        width = "30%",
+        height = "30%",
+      },
+    })
+    -- mount/open the component
+    popup:mount()
+    popup_setted = true
+
+    popup:on("WinClosed", function()
+      popup:unmount()
+      popup_setted = false
+    end, { once = true })
   end
 
-  local r = vim.region(0, "'<", "'>", vim.fn.visualmode(), true)
-  local text = region_to_text(r);
-
-  print("visual select text:", text)
-
-  local NuiText = require("nui.text")
-
-  local text_ui = NuiText(text, "float-code")
-
-  local bufnr, ns_id, linenr_start, byte_start = 0, -1, 1, 0
-
-  text_ui:render(bufnr, ns_id, linenr_start, byte_start)
-
-  return ""
+  vim.api.nvim_buf_set_lines(popup.bufnr, 0, 0, false, lines)
 end
 
 return M
