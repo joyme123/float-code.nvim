@@ -22,6 +22,8 @@ M.show_float_code_window = function()
   local r = vim.region(0, "'<", "'>", vim.fn.visualmode(), true)
   local text = region_to_text(r);
 
+  print("visual select text:", text)
+
   local NuiText = require("nui.text")
 
   local text_ui = NuiText(text, "float-code")
