@@ -56,7 +56,7 @@ M.show_float_window = function (lines)
     end, { once = true })
   end
 
-  vim.api.nvim_buf_set_lines(popup.bufnr, 0, 0, false, lines)
+  vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, lines)
 end
 
 return M
