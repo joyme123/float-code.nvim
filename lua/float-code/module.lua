@@ -5,10 +5,10 @@ M.get_selected_lines = function()
   local _, start_line, _, _ = unpack(vim.fn.getpos("'<"))
   local _, end_line, _, _ = unpack(vim.fn.getpos("'>"))
 
-  print("start: ", start_line, "end:", end_line)
+  -- print("start: ", start_line, "end:", end_line)
 
   local lines = vim.fn.getline(start_line, end_line)
-  print("lines", lines)
+  -- print("lines", lines)
   return lines
 end
 
